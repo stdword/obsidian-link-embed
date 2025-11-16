@@ -69,7 +69,12 @@ export async function handleEmbedCodeBlock(
     // If this is a dummy embed, just render it directly without any expensive operations
     if (isDummyEmbed) {
         // Render the dummy embed with default aspect ratio
-        renderEmbed(info, info.image, 1, el, settings);
+        const dummyEl = renderEmbed(info, info.image, 1, el, settings);
+
+        // Add button handlers even for dummy embeds so users can delete failed fetches
+        addRefreshButtonHandler(dummyEl, info, ctx, settings, vault);
+        addCopyButtonHandler(dummyEl, info, ctx, vault, settings);
+        addDeleteButtonHandler(dummyEl, info, ctx, vault, settings);
         return; // Exit early, skip all the fetching operations
     }
 

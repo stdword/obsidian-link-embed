@@ -67,7 +67,11 @@ export default class ObsidianLinkEmbedPlugin extends Plugin {
             id: 'embed-link',
             name: 'Create Embed Block',
             editorCallback: async (editor: Editor) => {
-                await handleEmbedLinkCommand(editor, this.settings);
+                await handleEmbedLinkCommand(
+                    editor,
+                    this.settings,
+                    this.app.vault,
+                );
             },
         });
 
@@ -89,7 +93,11 @@ export default class ObsidianLinkEmbedPlugin extends Plugin {
             this.addCommand({
                 id: `embed-link-${name}`,
                 name: `Create Embed Block with ${parseOptions[name]}`,
-                editorCallback: createParserCommandHandler(name, this.settings),
+                editorCallback: createParserCommandHandler(
+                    name,
+                    this.settings,
+                    this.app.vault,
+                ),
             });
 
             this.addCommand({

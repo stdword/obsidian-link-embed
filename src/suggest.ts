@@ -67,6 +67,7 @@ export default class EmbedSuggest extends EditorSuggest<IDateCompletion> {
                 [this.plugin.settings.primary, this.plugin.settings.backup],
                 this.plugin.settings,
                 true,
+                this.plugin.app.vault,
             );
         } else if (suggestion.choice == 'Create Markdown Link') {
             this.convertToMarkdownLink();
@@ -133,6 +134,7 @@ export default class EmbedSuggest extends EditorSuggest<IDateCompletion> {
                         ],
                         this.plugin.settings,
                         true,
+                        this.plugin.app.vault,
                     );
                 }
                 return null;

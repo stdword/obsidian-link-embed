@@ -194,6 +194,7 @@ export function generateEmbedMarkdown(
  * @param selectedParsers Array of parser types to try
  * @param settings Plugin settings
  * @param locationInfo Location info for error reporting
+ * @param vault The vault instance for saving images
  * @returns An object containing the parsed data and the parser that was successful
  * @throws Error if all parsers fail
  */
@@ -202,6 +203,7 @@ export async function tryParsers(
     selectedParsers: string[],
     settings: any,
     locationInfo: string,
+    vault: any,
 ): Promise<{ data: any; selectedParser: string }> {
     let notice: Notice | null = null;
     try {
@@ -221,7 +223,7 @@ export async function tryParsers(
             );
 
             try {
-                const parser = createParser(selectedParser, settings, null);
+                const parser = createParser(selectedParser, settings, vault);
                 parser.debug = settings.debug;
                 parser.location = locationInfo;
 
@@ -281,6 +283,7 @@ export async function convertUrlToMarkdownLink(
             selectedParsers,
             settings,
             'create-markdown-link',
+            vault,
         );
         if (data.title) {
             return `[${data.title}](${url})`;
@@ -357,6 +360,7 @@ export async function refreshEmbed(
                 [settings.primary, settings.backup],
                 settings,
                 locationInfo,
+                vault,
             );
 
             // Create new embed code block
@@ -628,6 +632,7 @@ export function addDeleteButtonHandler(
  * @param selectedParsers Array of parser types to try
  * @param settings Plugin settings
  * @param inPlace Whether to replace the selection with the embed
+ * @param vault The vault instance for saving images
  */
 export async function embedUrl(
     editor: Editor,
@@ -635,6 +640,7 @@ export async function embedUrl(
     selectedParsers: string[],
     settings: any,
     inPlace: boolean = false,
+    vault: any = null,
 ): Promise<void> {
     // Get the current file path and cursor position for error reporting
     // We don't have access to the actual file, so we'll use a hardcoded path
@@ -687,6 +693,7 @@ export async function embedUrl(
             selectedParsers,
             settings,
             locationInfo,
+            vault,
         );
 
         // Generate embed markdown

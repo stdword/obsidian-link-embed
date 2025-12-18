@@ -344,10 +344,12 @@ export async function handleEmbedCodeBlock(
  *
  * @param editor The editor instance
  * @param settings Plugin settings
+ * @param vault The vault instance
  */
 export async function handleEmbedLinkCommand(
     editor: Editor,
     settings: ObsidianLinkEmbedPluginSettings,
+    vault: any,
 ): Promise<void> {
     const selected = await ExEditor.getText(editor, settings.debug);
     if (!checkUrlValid(selected)) {
@@ -359,6 +361,7 @@ export async function handleEmbedLinkCommand(
         [settings.primary, settings.backup],
         settings,
         settings.inPlace,
+        vault,
     );
 }
 
@@ -367,11 +370,13 @@ export async function handleEmbedLinkCommand(
  *
  * @param parserName The name of the parser to use
  * @param settings Plugin settings
+ * @param vault The vault instance
  * @returns A command handler function
  */
 export function createParserCommandHandler(
     parserName: string,
     settings: ObsidianLinkEmbedPluginSettings,
+    vault: any,
 ): (editor: Editor) => Promise<void> {
     return async (editor: Editor) => {
         const selected = await ExEditor.getText(editor, settings.debug);
@@ -384,6 +389,7 @@ export function createParserCommandHandler(
             [parserName],
             settings,
             settings.inPlace,
+            vault,
         );
     };
 }

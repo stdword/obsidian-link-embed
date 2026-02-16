@@ -126,7 +126,7 @@ export abstract class Parser {
                 );
 
                 // Replace the image URL with local path
-                result.image = localPath;
+                result.image = '[[' + localPath + ']]';
             } catch (error) {
                 console.error(
                     '[Link Embed] Failed to save image to vault:',

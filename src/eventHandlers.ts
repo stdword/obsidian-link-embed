@@ -82,14 +82,10 @@ export async function handleEmbedCodeBlock(
     const originalInfo = { ...info }; // Store original info for second render
 
     // Process image path if it's a local file path
-    if (
-        info.image &&
-        !info.image.startsWith('http') &&
-        !info.image.startsWith('data:')
-    ) {
+    if (info.image.startsWith('[[')) {
         try {
             // Convert local image path to base64 data URL
-            const base64Image = await imageFileToBase64(vault, info.image);
+            const base64Image = await imageFileToBase64(vault, info.image.slice(2, -2));
             if (base64Image) {
                 info.image = base64Image; // Update info for initial render
                 originalInfo.image = base64Image; // Update original info for final render

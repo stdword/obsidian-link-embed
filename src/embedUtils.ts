@@ -504,12 +504,13 @@ export function addCopyButtonHandler(
                 const startLine = sectionInfo.lineStart;
                 const endLine = sectionInfo.lineEnd + 1;
                 const embedCode = lines.slice(startLine, endLine).join('\n');
+                const url = embedCode.match(/^url: "(.+?)"$/m).at(1) ?? '';
 
                 // Copy the exact embed code to clipboard
                 navigator.clipboard
-                    .writeText(embedCode)
+                    .writeText(url)
                     .then(() => {
-                        showNotice('Embed code copied to clipboard', {
+                        showNotice('URL copied to clipboard', {
                             debug: settings?.debug || false,
                             context: 'Link Embed - Copy',
                             type: 'success',
@@ -533,7 +534,7 @@ export function addCopyButtonHandler(
                 showNotice(
                     error instanceof Error
                         ? error
-                        : `Error copying embed code: ${String(error)}`,
+                        : `Error copying URL: ${String(error)}`,
                     {
                         debug: settings?.debug || false,
                         context: 'Link Embed - Copy',

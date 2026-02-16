@@ -235,6 +235,18 @@ export class LocalParser extends Parser {
         return '';
     }
 
+    getAuthor(doc: Document): string {
+        let element = doc.querySelector('[itemprop="author"] > [itemprop="name"]');
+        if (element instanceof HTMLElement) {
+            return element.attributes.content.value;
+        }
+        element = doc.querySelector('head meta[name="author"]');
+        if (element instanceof HTMLMetaElement) {
+            return element.content;
+        }
+        return '';
+    }
+
     async getFavicon(doc: Document, url: URL): Promise<string> {
         const base = url.href;
         const failedUrls = new Set<string>(); // Track failed URLs
@@ -454,6 +466,7 @@ export class LocalParser extends Parser {
         this.debugLog('[Link Embed] Doc:', doc);
         let title = this.getTitle(doc, uRL);
         let description = this.getDescription(doc);
+        const author = this.getAuthor(doc);
         let favicon = await this.getFavicon(doc, uRL);
         // Get image - now this is an async call
         let image = await this.getImage(doc, uRL);
@@ -462,7 +475,7 @@ export class LocalParser extends Parser {
         let processedData = this.process({
             title,
             image,
-            description,
+            description: author || description,
             favicon,
         });
 
